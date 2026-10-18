@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comidas Rápidas Carlitos · El Zulia</title>
+<meta name="description" content="Hamburguesas, perros, salchipapas, picadas y parrillas en El Zulia. Pide en línea y te lo llevamos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#C8102E;--red-d:#9c0c24;--yellow:#FFD21F;--navy:#14213D;--black:#0d0d0d;--card:#1b1b1b;--white:#fff7e6;--muted:#b9b2a0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--black);color:var(--white);line-height:1.5}
+button{font:inherit;cursor:pointer;border:0}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.display{font-family:'Bowlby One',Impact,sans-serif;font-weight:400;letter-spacing:.01em}
+
+/* Cabecera */
+header{position:sticky;top:0;z-index:20;background:var(--red);border-bottom:4px solid var(--yellow);display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+header .brand{font-size:1.15rem;color:var(--yellow)}
+#openCart{background:var(--yellow);color:var(--black);font-weight:800;padding:9px 16px;border-radius:999px;display:flex;gap:8px;align-items:center}
+#openCart span.n{background:var(--red);color:#fff;border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:.85rem}
+
+/* Portada: cruz de la bandera británica */
+.hero{position:relative;overflow:hidden;background:var(--navy);padding:56px 20px 64px;text-align:center;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:-20%;z-index:-1;
+background:
+linear-gradient(90deg,transparent 42%,#fff 42%,#fff 58%,transparent 58%),
+linear-gradient(0deg,transparent 42%,#fff 42%,#fff 58%,transparent 58%),
+linear-gradient(90deg,transparent 46%,var(--red) 46%,var(--red) 54%,transparent 54%),
+linear-gradient(0deg,transparent 46%,var(--red) 46%,var(--red) 54%,transparent 54%);
+opacity:.9}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 50%,rgba(20,33,61,.15),rgba(13,13,13,.55))}
+.hero .tag{display:inline-block;background:var(--yellow);color:var(--black);font-weight:800;padding:4px 14px;border-radius:6px;transform:rotate(-2deg)}
+.hero h1{font-size:clamp(2.6rem,11vw,5.6rem);line-height:.95;margin:16px 0 12px;color:var(--yellow);text-shadow:4px 4px 0 var(--red-d),7px 7px 0 rgba(0,0,0,.5)}
+.hero p{max-width:34ch;margin:0 auto 24px;font-size:1.1rem;font-weight:700;text-shadow:0 2px 6px #000}
+.btn{display:inline-block;background:var(--yellow);color:var(--black);font-weight:800;font-size:1.05rem;padding:14px 28px;border-radius:999px;text-decoration:none;box-shadow:0 5px 0 var(--red-d)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--red-d)}
+
+/* Menú */
+nav.cats{position:sticky;top:60px;z-index:15;background:var(--black);display:flex;gap:8px;overflow-x:auto;padding:12px 16px;border-bottom:1px solid #2a2a2a;scrollbar-width:none}
+nav.cats button{flex:none;background:#262626;color:var(--white);font-weight:800;padding:8px 16px;border-radius:999px}
+nav.cats button.on{background:var(--yellow);color:var(--black)}
+main{max-width:980px;margin:0 auto;padding:8px 16px 120px}
+section.cat{padding-top:28px;scroll-margin-top:120px}
+section.cat h2{font-size:1.8rem;color:var(--yellow);margin-bottom:4px}
+section.cat .sub{color:var(--muted);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.item{background:var(--card);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #2c2c2c}
+.item .ph{height:150px;background:linear-gradient(135deg,var(--red) 0 50%,var(--navy) 50%);display:grid;place-items:center;font-size:3.4rem}
+.item .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.item .body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.item h3{font-size:1.1rem;font-weight:800}
+.item p{color:var(--muted);font-size:.92rem;flex:1}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.price{font-weight:800;color:var(--yellow);font-size:1.1rem}
+.add{background:var(--red);color:#fff;font-weight:800;padding:8px 16px;border-radius:999px}
+.add:hover{background:var(--red-d)}
+.drinks{list-style:none;background:var(--card);border-radius:14px;border:1px solid #2c2c2c}
+.drinks li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #2a2a2a}
+.drinks li:last-child{border:0}
+
+/* Carrito */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
+#overlay.on{opacity:1;pointer-events:auto}
+#cart{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:#fff7e6;color:var(--black);z-index:31;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column}
+#cart.on{transform:none}
+#cart header{position:static;border:0;border-bottom:4px solid var(--yellow)}
+#cart header h2{font-size:1.2rem;color:var(--yellow)}
+#closeCart{background:transparent;color:#fff;font-size:1.8rem;line-height:1}
+.cbody{flex:1;overflow-y:auto;padding:14px 16px}
+.empty{text-align:center;padding:40px 10px;color:#555}
+.line{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #e6dcc3}
+.line .nm{flex:1;font-weight:800}
+.line .nm small{display:block;font-weight:500;color:#666}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-weight:800;font-size:1.1rem}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.2rem;padding:14px 0}
+.cfoot{padding:12px 16px 18px;border-top:1px solid #e6dcc3;background:#fff}
+.cfoot label{display:block;font-weight:800;font-size:.85rem;margin:8px 0 3px}
+.cfoot input,.cfoot select,.cfoot textarea{width:100%;padding:10px;border:2px solid #d9cfb4;border-radius:10px;font:inherit;background:#fffdf7}
+.cfoot textarea{resize:vertical;min-height:50px}
+.send{width:100%;margin-top:12px;background:#1faa59;color:#fff;font-weight:800;font-size:1.05rem;padding:14px;border-radius:12px}
+.send:disabled{background:#999}
+.note{font-size:.8rem;color:#666;margin-top:8px}
+#fab{position:fixed;left:12px;right:12px;bottom:12px;z-index:18;display:none}
+#fab button{width:100%;background:var(--yellow);color:var(--black);font-weight:800;padding:14px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.6);display:flex;justify-content:space-between}
+footer{background:var(--red);border-top:4px solid var(--yellow);text-align:center;padding:28px 16px 90px}
+footer a{color:var(--yellow);font-weight:800}
+@media(min-width:700px){#fab{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand display">CARLITOS</div>
+  <button id="openCart" aria-label="Abrir pedido">🛒 Mi pedido <span class="n" id="cnt">0</span></button>
+</header>
+
+<div class="hero">
+  <span class="tag">Centro de El Zulia</span>
+  <h1 class="display">Comidas<br>Rápidas<br>Carlitos</h1>
+  <p>Hamburguesas, perros, salchipapas, picadas y parrillas. Pídelo aquí y te lo llevamos.</p>
+  <a class="btn" href="#menu">Ver el menú</a>
+</div>
+
+<nav class="cats" id="cats" aria-label="Categorías"></nav>
+<main id="menu"></main>
+
+<footer>
+  <p class="display" style="font-size:1.4rem;color:var(--yellow)">Comidas Rápidas Carlitos</p>
+  <p>Centro de El Zulia, Norte de Santander</p>
+  <p>Pedidos por WhatsApp: <a href="https://wa.me/573123053054">312 305 30 54</a> · <a href="https://wa.me/573103408960">310 340 89 60</a></p>
+</footer>
+
+<div id="fab"><button id="fabBtn"><span id="fabN">Ver mi pedido</span><span id="fabT">$0</span></button></div>
+<div id="overlay"></div>
+
+<aside id="cart" aria-label="Mi pedido">
+  <header><h2 class="display">Mi pedido</h2><button id="closeCart" aria-label="Cerrar">×</button></header>
+  <div class="cbody" id="cbody"></div>
+  <div class="cfoot">
+    <label for="fNombre">Tu nombre</label><input id="fNombre" autocomplete="name">
+    <label for="fTel">Tu celular</label><input id="fTel" type="tel" autocomplete="tel">
+    <label for="fDir">Dirección de entrega</label><input id="fDir" autocomplete="street-address" placeholder="Barrio, calle, referencia">
+    <label for="fPago">Cómo vas a pagar</label>
+    <select id="fPago"><option>Efectivo</option><option>Nequi</option><option>Transferencia</option><option>Otro</option></select>
+    <label for="fNota">Notas (opcional)</label><textarea id="fNota" placeholder="Sin cebolla, salsas aparte…"></textarea>
+    <button class="send" id="send">Enviar pedido por WhatsApp</button>
+    <p class="note">El pedido queda pendiente hasta que confirmemos el pago.</p>
+  </div>
+</aside>
+
+<!-- Firebase: solo se activa si pegas tu configuración más abajo -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ================= CONFIGURACIÓN ================= */
+const WHATSAPP = "573123053054";           // número que recibe los pedidos
+const FIREBASE_CONFIG = {                  // pega aquí la configuración de tu proyecto carlitos-comidas-rapidas
+  apiKey: "PEGA_AQUI", authDomain: "", projectId: "carlitos-comidas-rapidas", appId: ""
+};
+const COLECCION_PEDIDOS = "pedidos_web";   // colección donde llegan los pedidos a la caja
+
+/* ================= MENÚ ================= */
+// Para poner fotos reales: sube la imagen a la carpeta "img" y escribe su nombre en img (ej. img:"img/hamburguesa.jpg")
+const MENU = [
+ {id:"rapidas",nombre:"Comidas rápidas",sub:"Lo que nos hizo famosos en El Zulia.",items:[
+  {n:"Perro Carlitos",p:12000,e:"🌭"},
+  {n:"Perro Americano",p:16000,e:"🌭"},
+  {n:"Sándwich",p:12000,e:"🥪"},
+  {n:"Hamburguesa Carlitos",p:18000,e:"🍔"},
+  {n:"Hamburguesa Carlitos con papas",p:23000,e:"🍔"},
+  {n:"Salchipapa personal",p:15000,e:"🍟"},
+  {n:"Salchipapa grande",p:20000,e:"🍟"},
+  {n:"Choripapa",p:25000,e:"🍟"},
+  {n:"Salchipollo",p:45000,e:"🍗"},
+  {n:"Patacón mixto",p:30000,e:"🫓"}]},
+ {id:"picadas",nombre:"Picadas",sub:"Papa con carne, pollo, huevo de codorniz y tocineta.",items:[
+  {n:"Picada",p:60000,e:"🍽️"},
+  {n:"Picada extra",p:75000,e:"🍽️"}]},
+ {id:"parrillas",nombre:"Parrillas",sub:"Pregunta el precio por WhatsApp al enviar tu pedido.",items:[
+  {n:"Parrilla de res",p:null,e:"🥩"},
+  {n:"Parrilla mixta",d:"Res, pollo, cerdo, chorizo y alas.",p:null,e:"🍖"},
+  {n:"Parrilla de res y pollo",p:null,e:"🍗"},
+  {n:"Servicio de pechuga",p:25000,e:"🍗"},
+  {n:"Servicio de carne asada",p:25000,e:"🥩"},
+  {n:"Servicio de alas",p:25000,e:"🍗"}]},
+ {id:"bebidas",nombre:"Bebidas",sub:"",lista:true,items:[
+  {n:"Postobón personal",p:3000},{n:"Postobón litrón",p:5000},{n:"Postobón 1.5 L",p:7000},{n:"Postobón 2.5 L",p:12000},
+  {n:"Pool personal",p:2000},{n:"Coca-Cola Pet 400",p:5000},{n:"Coca-Cola 1.5 L",p:10000},
+  {n:"Jugo Hit personal",p:3500},{n:"Jugo Hit litro",p:6000},
+  {n:"Cerveza Poker o Águila",p:5000},{n:"Heineken o Club Colombia",p:5500}]}
+];
+
+/* ================= LÓGICA ================= */
+const $=s=>document.querySelector(s);
+const fmt=n=>"$"+n.toLocaleString("es-CO");
+let cart={}; // clave: nombre -> {n,p,q}
+
+// Pintar menú
+const cats=$("#cats"), menu=$("#menu");
+MENU.forEach((c,i)=>{
+  const b=document.createElement("button");b.textContent=c.nombre;b.dataset.t=c.id;if(!i)b.className="on";cats.appendChild(b);
+  const s=document.createElement("section");s.className="cat";s.id=c.id;
+  s.innerHTML=`<h2 class="display">${c.nombre}</h2>${c.sub?`<p class="sub">${c.sub}</p>`:""}`;
+  if(c.lista){
+    const ul=document.createElement("ul");ul.className="drinks";
+    c.items.forEach(it=>{const li=document.createElement("li");
+      li.innerHTML=`<span>${it.n}</span><span class="price">${fmt(it.p)}</span>`;
+      const a=document.createElement("button");a.className="add";a.textContent="Agregar";a.onclick=()=>add(it);li.appendChild(a);ul.appendChild(li)});
+    s.appendChild(ul);
+  }else{
+    const g=document.createElement("div");g.className="grid";
+    c.items.forEach(it=>{
+      const d=document.createElement("article");d.className="item";
+      const ph=it.img?`<img src="${it.img}" alt="${it.n}" loading="lazy">`:it.e;
+      d.innerHTML=`<div class="ph" aria-hidden="true">${ph}</div><div class="body"><h3>${it.n}</h3><p>${it.d||""}</p><div class="row"><span class="price">${it.p?fmt(it.p):"Por confirmar"}</span></div></div>`;
+      const a=document.createElement("button");a.className="add";a.textContent="Agregar";a.onclick=()=>add(it);
+      d.querySelector(".row").appendChild(a);g.appendChild(d);
+    });
+    s.appendChild(g);
+  }
+  menu.appendChild(s);
+});
+cats.addEventListener("click",e=>{const t=e.target.dataset.t;if(t)document.getElementById(t).scrollIntoView()});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){
+  cats.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.t===e.target.id));}}),{rootMargin:"-140px 0px -65% 0px"});
+document.querySelectorAll("section.cat").forEach(s=>obs.observe(s));
+
+function add(it){const k=it.n;(cart[k]=cart[k]||{n:it.n,p:it.p,q:0}).q++;render();}
+function chg(k,d){cart[k].q+=d;if(cart[k].q<=0)delete cart[k];render();}
+window.chg=chg;
+function totals(){let q=0,t=0,pend=false;Object.values(cart).forEach(i=>{q+=i.q;if(i.p)t+=i.p*i.q;else pend=true});return{q,t,pend}}
+function render(){
+  const {q,t,pend}=totals();
+  $("#cnt").textContent=q;
+  $("#fab").style.display=q?"block":"none";
+  $("#fabN").textContent=q+" en tu pedido";$("#fabT").textContent=fmt(t)+(pend?" +":"");
+  const b=$("#cbody");
+  if(!q){b.innerHTML='<p class="empty">Tu pedido está vacío.<br>Agrega algo del menú.</p>';$("#send").disabled=true;return}
+  $("#send").disabled=false;
+  b.innerHTML=Object.values(cart).map(i=>`<div class="line"><div class="nm">${i.n}<small>${i.p?fmt(i.p*i.q):"Precio por confirmar"}</small></div>
+  <div class="qty"><button onclick="chg('${i.n.replace(/'/g,"\\'")}',-1)" aria-label="Quitar uno">−</button><b>${i.q}</b><button onclick="chg('${i.n.replace(/'/g,"\\'")}',1)" aria-label="Agregar uno">+</button></div></div>`).join("")
+  +`<div class="total"><span>Total</span><span>${fmt(t)}${pend?" + parrillas":""}</span></div>`;
+}
+const open=v=>{$("#cart").classList.toggle("on",v);$("#overlay").classList.toggle("on",v)};
+$("#openCart").onclick=()=>open(true);$("#fabBtn").onclick=()=>open(true);
+$("#closeCart").onclick=()=>open(false);$("#overlay").onclick=()=>open(false);
+
+// Firebase (opcional)
+let db=null;
+try{ if(FIREBASE_CONFIG.apiKey!=="PEGA_AQUI"){firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore();} }
+catch(e){console.warn("Firebase no configurado:",e)}
+
+$("#send").onclick=()=>{
+  const nombre=$("#fNombre").value.trim(),tel=$("#fTel").value.trim(),dir=$("#fDir").value.trim();
+  if(!nombre||!dir||!tel){alert("Completa tu nombre, celular y dirección para enviar el pedido.");return}
+  const {t,pend}=totals(), items=Object.values(cart), pago=$("#fPago").value, nota=$("#fNota").value.trim();
+  const lineas=items.map(i=>`• ${i.q} x ${i.n}${i.p?" — "+fmt(i.p*i.q):" (precio por confirmar)"}`).join("\n");
+  const msg=`*Pedido web — Comidas Rápidas Carlitos*\n\n${lineas}\n\n*Total:* ${fmt(t)}${pend?" + parrillas por confirmar":""}\n*Pago:* ${pago}\n*Nombre:* ${nombre}\n*Celular:* ${tel}\n*Dirección:* ${dir}${nota?"\n*Notas:* "+nota:""}`;
+  // Notificación a la caja (estado pendiente hasta confirmar el pago)
+  if(db){db.collection(COLECCION_PEDIDOS).add({
+    cliente:nombre,celular:tel,direccion:dir,metodoPago:pago,notas:nota,total:t,parrillaPorConfirmar:pend,
+    items:items.map(i=>({nombre:i.n,precio:i.p,cantidad:i.q})),
+    estado:"pendiente",origen:"web",creado:firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(e=>console.error("No se pudo avisar a la caja",e));}
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");
+  cart={};render();open(false);
+};
+render();
+</script>
+</body>
+</html>
